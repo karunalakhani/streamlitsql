@@ -6,7 +6,7 @@ import streamlit as st
 from vanna.remote import VannaDefault
 
 
-VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
+vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
 
 # vn.connect_to...(YOUR_DATABASE_CREDENTIALS)
 # example using suprabase
