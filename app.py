@@ -7,21 +7,12 @@ import streamlit as st
 import vanna as vn
 from dotenv import load_dotenv
 
+from vanna.remote import VannaDefault
 
 @st.cache_resource(ttl=3600)
 def setup_connexion():
-    if "vanna_api_key" in st.secrets and "gcp_project_id" in st.secrets:
-        vn.set_api_key(st.secrets.get("vanna_api_key"))
-        vn.set_model("thelook")
-        vn.connect_to_bigquery(
-            project_id=st.secrets.get("gcp_project_id"),
-        )
-
-    else:
-
-        vn.set_api_key('794c9f61449042fcbd1570d595043395')
-        vn.set_model("axonic")
-        vn.connect_to_sqlite('mydatabase.db')
+    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
+    vn.connect_to_sqlite('mydatabase.db')
         
        
 
