@@ -25,7 +25,7 @@ import streamlit as st
 
 
 @st.cache_data(show_spinner="Generating sample questions ...")
-def generate_questions_cached(vn):
+def generate_questions_cached(_vn):
 
     return vn.generate_questions()
 
