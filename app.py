@@ -26,45 +26,39 @@ import vanna as vn
 
 
 @st.cache_data(show_spinner="Generating sample questions ...")
-def generate_questions_cached():
-    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
-    vn.connect_to_sqlite('mydatabase.db')
+def generate_questions_cached(vn):
+
     return vn.generate_questions()
 
 
 @st.cache_data(show_spinner="Generating SQL query ...")
-def generate_sql_cached(question: str):
-    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
-    vn.connect_to_sqlite('mydatabase.db')
+def generate_sql_cached(question: str,vn):
+
     return vn.generate_sql(question=question)
 
 
 @st.cache_data(show_spinner="Running SQL query ...")
-def run_sql_cached(sql: str):
-    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
-    vn.connect_to_sqlite('mydatabase.db')
+def run_sql_cached(sql: str,vn):
+
     return vn.run_sql(sql=sql)
 
 
 @st.cache_data(show_spinner="Generating Plotly code ...")
-def generate_plotly_code_cached(question, sql, df):
-    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
-    vn.connect_to_sqlite('mydatabase.db')
+def generate_plotly_code_cached(question, sql, df,vn):
+
     code = vn.generate_plotly_code(question=question, sql=sql, df=df)
     return code
 
 
 @st.cache_data(show_spinner="Running Plotly code ...")
-def generate_plot_cached(code, df):
-    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
-    vn.connect_to_sqlite('mydatabase.db')
+def generate_plot_cached(code, df,vn):
+
     return vn.get_plotly_figure(plotly_code=code, df=df)
 
 
 @st.cache_data(show_spinner="Generating followup questions ...")
-def generate_followup_cached(question, df):
-    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
-    vn.connect_to_sqlite('mydatabase.db')
+def generate_followup_cached(question, df,vn):
+
     return vn.generate_followup_questions(question=question, df=df)
 
 st.set_page_config(layout="wide")
@@ -93,7 +87,7 @@ assistant_message_suggested = st.chat_message(
 )
 if assistant_message_suggested.button("Click to show suggested questions"):
     st.session_state["my_question"] = None
-    questions = generate_questions_cached()
+    questions = generate_questions_cached(vn)
     for i, question in enumerate(questions):
         time.sleep(0.05)
         button = st.button(
@@ -115,7 +109,7 @@ if my_question:
     user_message = st.chat_message("user")
     user_message.write(f"{my_question}")
 
-    sql = generate_sql_cached(question=my_question)
+    sql = generate_sql_cached(question=my_question,vn)
 
     if sql:
         if st.session_state.get("show_sql", True):
@@ -142,11 +136,11 @@ if my_question:
             fixed_sql_query = sql_response["text"]
 
             if fixed_sql_query != "":
-                df = run_sql_cached(sql=fixed_sql_query)
+                df = run_sql_cached(sql=fixed_sql_query,vn)
             else:
                 df = None
         elif happy_sql == "yes":
-            df = run_sql_cached(sql=sql)
+            df = run_sql_cached(sql=sql,vn)
         else:
             df = None
 
@@ -204,7 +198,7 @@ if my_question:
                         "assistant",
                         avatar="https://ask.vanna.ai/static/img/vanna_circle.png",
                     )
-                    fig = generate_plot_cached(code=code, df=df)
+                    fig = generate_plot_cached(code=code, df=df,vn)
                     if fig is not None:
                         assistant_message_chart.plotly_chart(fig)
                     else:
@@ -216,7 +210,7 @@ if my_question:
                         avatar="https://ask.vanna.ai/static/img/vanna_circle.png",
                     )
                     followup_questions = generate_followup_cached(
-                        question=my_question, df=df
+                        question=my_question, df=df,vn
                     )
                     st.session_state["df"] = None
 
