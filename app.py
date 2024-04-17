@@ -139,7 +139,7 @@ if my_question:
             else:
                 df = None
         elif happy_sql == "yes":
-            df = run_sql_cached(sql=sql,vn=vn)
+            df = run_sql_cached(sql=sql)
         else:
             df = None
 
@@ -197,7 +197,7 @@ if my_question:
                         "assistant",
                         avatar="https://ask.vanna.ai/static/img/vanna_circle.png",
                     )
-                    fig = generate_plot_cached(code=code, df=df,vn=vn)
+                    fig = generate_plot_cached(code=code, df=df)
                     if fig is not None:
                         assistant_message_chart.plotly_chart(fig)
                     else:
