@@ -56,9 +56,9 @@ def generate_plot_cached(code, df):
 
 
 @st.cache_data(show_spinner="Generating followup questions ...")
-def generate_followup_cached(question, df):
+def generate_followup_cached(question, sql,df):
 
-    return vn.generate_followup_questions(question=question, df=df)
+    return vn.generate_followup_questions(question=question,sql=sql, df=df)
 
 st.set_page_config(layout="wide")
 setup_connexion()
