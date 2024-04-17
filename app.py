@@ -209,7 +209,7 @@ if my_question:
                         avatar="https://ask.vanna.ai/static/img/vanna_circle.png",
                     )
                     followup_questions = generate_followup_cached(
-                        question=my_question, df=df
+                        question=my_question, sql=sql,df=df
                     )
                     st.session_state["df"] = None
 
