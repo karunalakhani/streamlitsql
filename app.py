@@ -32,31 +32,43 @@ def generate_questions_cached():
 
 @st.cache_data(show_spinner="Generating SQL query ...")
 def generate_sql_cached(question: str):
+    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
+    vn.connect_to_sqlite('mydatabase.db')
     return vn.generate_sql(question=question)
 
 
 @st.cache_data(show_spinner="Running SQL query ...")
 def run_sql_cached(sql: str):
+    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
+    vn.connect_to_sqlite('mydatabase.db')
     return vn.run_sql(sql=sql)
 
 
 @st.cache_data(show_spinner="Generating Plotly code ...")
 def generate_plotly_code_cached(question, sql, df):
+    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
+    vn.connect_to_sqlite('mydatabase.db')
     code = vn.generate_plotly_code(question=question, sql=sql, df=df)
     return code
 
 
 @st.cache_data(show_spinner="Running Plotly code ...")
 def generate_plot_cached(code, df):
+    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
+    vn.connect_to_sqlite('mydatabase.db')
     return vn.get_plotly_figure(plotly_code=code, df=df)
 
 
 @st.cache_data(show_spinner="Generating followup questions ...")
 def generate_followup_cached(question, df):
+    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
+    vn.connect_to_sqlite('mydatabase.db')
     return vn.generate_followup_questions(question=question, df=df)
 
 st.set_page_config(layout="wide")
 setup_connexion()
+vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
+vn.connect_to_sqlite('mydatabase.db')
 
 st.sidebar.title("Output Settings")
 st.sidebar.checkbox("Show SQL", value=True, key="show_sql")
@@ -66,7 +78,7 @@ st.sidebar.checkbox("Show Chart", value=True, key="show_chart")
 st.sidebar.checkbox("Show Follow-up Questions", value=True, key="show_followup")
 st.sidebar.button("Rerun", on_click=setup_session_state, use_container_width=True)
 
-st.title("Vanna AI")
+st.title("Sql AI")
 st.sidebar.write(st.session_state)
 
 
