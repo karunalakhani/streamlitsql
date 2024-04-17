@@ -31,13 +31,13 @@ def generate_questions_cached(_vn):
 
 
 @st.cache_data(show_spinner="Generating SQL query ...")
-def generate_sql_cached(question: str,vn):
+def generate_sql_cached(question: str,_vn):
 
     return vn.generate_sql(question=question)
 
 
 @st.cache_data(show_spinner="Running SQL query ...")
-def run_sql_cached(sql: str,vn):
+def run_sql_cached(sql: str,_vn):
 
     return vn.run_sql(sql=sql)
 
@@ -50,13 +50,13 @@ def generate_plotly_code_cached(question, sql, df,vn):
 
 
 @st.cache_data(show_spinner="Running Plotly code ...")
-def generate_plot_cached(code, df,vn):
+def generate_plot_cached(code, df,_vn):
 
     return vn.get_plotly_figure(plotly_code=code, df=df)
 
 
 @st.cache_data(show_spinner="Generating followup questions ...")
-def generate_followup_cached(question, df,vn):
+def generate_followup_cached(question, df,_vn):
 
     return vn.generate_followup_questions(question=question, df=df)
 
