@@ -22,7 +22,7 @@ def setup_connexion():
         vn.set_api_key('794c9f61449042fcbd1570d595043395')
         vn.set_model("axonic")
         vn.connect_to_sqlite('mydatabase.db')
-        )
+        
        
 
 
