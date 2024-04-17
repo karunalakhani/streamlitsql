@@ -27,6 +27,8 @@ import vanna as vn
 
 @st.cache_data(show_spinner="Generating sample questions ...")
 def generate_questions_cached():
+    vn = VannaDefault(model='axonic', api_key='794c9f61449042fcbd1570d595043395')
+    vn.connect_to_sqlite('mydatabase.db')
     return vn.generate_questions()
 
 
