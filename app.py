@@ -4,7 +4,6 @@ import streamlit as st
 from code_editor import code_editor
 import os
 import streamlit as st
-import vanna as vn
 from dotenv import load_dotenv
 
 from vanna.remote import VannaDefault
@@ -22,7 +21,7 @@ def setup_session_state():
 
 
 import streamlit as st
-import vanna as vn
+
 
 
 @st.cache_data(show_spinner="Generating sample questions ...")
@@ -109,7 +108,7 @@ if my_question:
     user_message = st.chat_message("user")
     user_message.write(f"{my_question}")
 
-    sql = generate_sql_cached(question=my_question,vn)
+    sql = generate_sql_cached(question=my_question,vn=vn)
 
     if sql:
         if st.session_state.get("show_sql", True):
@@ -136,11 +135,11 @@ if my_question:
             fixed_sql_query = sql_response["text"]
 
             if fixed_sql_query != "":
-                df = run_sql_cached(sql=fixed_sql_query,vn)
+                df = run_sql_cached(sql=fixed_sql_query,vn=vn)
             else:
                 df = None
         elif happy_sql == "yes":
-            df = run_sql_cached(sql=sql,vn)
+            df = run_sql_cached(sql=sql,vn=vn)
         else:
             df = None
 
@@ -198,7 +197,7 @@ if my_question:
                         "assistant",
                         avatar="https://ask.vanna.ai/static/img/vanna_circle.png",
                     )
-                    fig = generate_plot_cached(code=code, df=df,vn)
+                    fig = generate_plot_cached(code=code, df=df,vn=vn)
                     if fig is not None:
                         assistant_message_chart.plotly_chart(fig)
                     else:
@@ -210,7 +209,7 @@ if my_question:
                         avatar="https://ask.vanna.ai/static/img/vanna_circle.png",
                     )
                     followup_questions = generate_followup_cached(
-                        question=my_question, df=df,vn
+                        question=my_question, df=df,vn=vn
                     )
                     st.session_state["df"] = None
 
