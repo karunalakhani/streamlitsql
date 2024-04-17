@@ -25,38 +25,38 @@ import streamlit as st
 
 
 @st.cache_data(show_spinner="Generating sample questions ...")
-def generate_questions_cached(_vn):
+def generate_questions_cached():
 
     return vn.generate_questions()
 
 
 @st.cache_data(show_spinner="Generating SQL query ...")
-def generate_sql_cached(question: str,_vn):
+def generate_sql_cached(question: str):
 
     return vn.generate_sql(question=question)
 
 
 @st.cache_data(show_spinner="Running SQL query ...")
-def run_sql_cached(sql: str,_vn):
+def run_sql_cached(sql: str):
 
     return vn.run_sql(sql=sql)
 
 
 @st.cache_data(show_spinner="Generating Plotly code ...")
-def generate_plotly_code_cached(question, sql, df,vn):
+def generate_plotly_code_cached(question, sql, df):
 
     code = vn.generate_plotly_code(question=question, sql=sql, df=df)
     return code
 
 
 @st.cache_data(show_spinner="Running Plotly code ...")
-def generate_plot_cached(code, df,_vn):
+def generate_plot_cached(code, df):
 
     return vn.get_plotly_figure(plotly_code=code, df=df)
 
 
 @st.cache_data(show_spinner="Generating followup questions ...")
-def generate_followup_cached(question, df,_vn):
+def generate_followup_cached(question, df):
 
     return vn.generate_followup_questions(question=question, df=df)
 
@@ -86,7 +86,7 @@ assistant_message_suggested = st.chat_message(
 )
 if assistant_message_suggested.button("Click to show suggested questions"):
     st.session_state["my_question"] = None
-    questions = generate_questions_cached(vn)
+    questions = generate_questions_cached()
     for i, question in enumerate(questions):
         time.sleep(0.05)
         button = st.button(
@@ -108,7 +108,7 @@ if my_question:
     user_message = st.chat_message("user")
     user_message.write(f"{my_question}")
 
-    sql = generate_sql_cached(question=my_question,vn=vn)
+    sql = generate_sql_cached(question=my_question)
 
     if sql:
         if st.session_state.get("show_sql", True):
@@ -135,7 +135,7 @@ if my_question:
             fixed_sql_query = sql_response["text"]
 
             if fixed_sql_query != "":
-                df = run_sql_cached(sql=fixed_sql_query,vn=vn)
+                df = run_sql_cached(sql=fixed_sql_query)
             else:
                 df = None
         elif happy_sql == "yes":
@@ -209,7 +209,7 @@ if my_question:
                         avatar="https://ask.vanna.ai/static/img/vanna_circle.png",
                     )
                     followup_questions = generate_followup_cached(
-                        question=my_question, df=df,vn=vn
+                        question=my_question, df=df
                     )
                     st.session_state["df"] = None
 
